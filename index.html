@@ -2,36 +2,68 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Mara Validator</title>
-
+    <meta charset="UTF-8">
+    <title>Mara Validator</title>
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-  <form>
-    <label for="cars">Choose a language:</label>
-    <select name="language-selected" id="language-selected">
-      <option value="select">--Select--</option>
-      <option value="HTML">HTML</option>
-      <option value="CSS">CSS</option>
-      <option value="Javascript">Javascript</option>
-    </select>
-    <br>
+    <form>
+        <label for="cars">Choose a language:</label>
+        <select name="language-selected" id="language-selected">
+          <option value="select">--Select--</option>
+          <option value="HTML">HTML</option>
+          <option value="CSS">CSS</option>
+          <option value="Javascript">Javascript</option>
+        </select>
+        <br>
+      
+        <label for="code">Enter your code here:</label>
+        <br>
+        <textarea id="code-to-analyse" cols="80" rows="15"></textarea>
+        <br>
+        <input type="submit" value="Validate" id="validate-code">
 
-    <label for="code">Enter your code here:</label>
-    <br>
-    <textarea id="code-to-analyse" cols="80" rows="15"></textarea>
-    <br>
-    <input type="submit" value="Validate" id="validate-code">
+        <input type="reset" value="Clear" id="clear-page">
 
-    <input type="reset" value="Clear" id="clear-page">
+        <div id="append-errors-here"></div>
+        
+      </form>
 
-    <div id="append-errors-here"></div>
 
-  </form>
 
-  <!-- jquery script -->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <!-- JS file in assets -->
-  <script src="assets/script.js"></script>
-</body>
+      <!--No language selected Modal -->
+      <div id="no-language-selected-modal" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please select a language</p>
+        </div>
+      </div>
+
+      <!--No code inputted Modal -->
+      <div id="no-code-input-modal" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please enter your code</p>
+        </div>
+      </div>
+
+      <!--Wrong code type modal -- needs corresponding JS -->
+      <div id="wrong-language-sleected" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please check the selected language</p>
+        </div>
+      </div>
+
+
+      <!-- jquery script -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <!-- JS file in assets -->
+      <script src="assets/javascript/script.js"></script>
+
+</body> 
