@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mara Validator</title>
-   
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 
 <body>
@@ -22,11 +23,47 @@
         <br>
         <textarea id="code-to-analyse" cols="80" rows="15"></textarea>
         <br>
-        <input type="submit" value="Validate">
+        <input type="submit" value="Validate" id="validate-code">
 
-        <input type="reset" value="Clear">
+        <input type="reset" value="Clear" id="clear-page">
 
         <div id="append-errors-here"></div>
         
       </form>
+
+
+
+      <!--No language selected Modal -->
+      <div id="no-language-selected-modal" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please select a language</p>
+        </div>
+      </div>
+
+      <!--No code inputted Modal -->
+      <div id="no-code-input-modal" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please enter your code</p>
+        </div>
+      </div>
+
+      <!--Wrong code type modal -- needs corresponding JS -->
+      <div id="wrong-language-sleected" class="modal hide">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Please check the selected language</p>
+        </div>
+      </div>
+
+
+      <!-- jquery script -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <!-- JS file in assets -->
+      <script src="assets/script.js"></script>
+
 </body> 
