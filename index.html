@@ -2,31 +2,36 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Mara Validator</title>
-   
+  <meta charset="UTF-8">
+  <title>Mara Validator</title>
+
 </head>
 
 <body>
-    <form>
-        <label for="cars">Choose a language:</label>
-        <select name="language-selected" id="language-selected">
-          <option value="select">--Select--</option>
-          <option value="HTML">HTML</option>
-          <option value="CSS">CSS</option>
-          <option value="Javascript">Javascript</option>
-        </select>
-        <br>
-      
-        <label for="code">Enter your code here:</label>
-        <br>
-        <textarea id="code-to-analyse" cols="80" rows="15"></textarea>
-        <br>
-        <input type="submit" value="Validate">
+  <form>
+    <label for="cars">Choose a language:</label>
+    <select name="language-selected" id="language-selected">
+      <option value="select">--Select--</option>
+      <option value="HTML">HTML</option>
+      <option value="CSS">CSS</option>
+      <option value="Javascript">Javascript</option>
+    </select>
+    <br>
 
-        <input type="reset" value="Clear">
+    <label for="code">Enter your code here:</label>
+    <br>
+    <textarea id="code-to-analyse" cols="80" rows="15"></textarea>
+    <br>
+    <input type="submit" value="Validate" id="validate-code">
 
-        <div id="append-errors-here"></div>
-        
-      </form>
-</body> 
+    <input type="reset" value="Clear" id="clear-page">
+
+    <div id="append-errors-here"></div>
+
+  </form>
+
+  <!-- jquery script -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!-- JS file in assets -->
+  <script src="assets/script.js"></script>
+</body>
