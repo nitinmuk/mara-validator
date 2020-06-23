@@ -119,18 +119,7 @@ $(document).ready(function () {
      * first clears the error div and then create a table presenting all errors and add it to relevant div
      */
     function renderResult() {
-        // access modal content for number of errors found and set error count to result.lenght
-        $("#total-errors-here").text(result.length);
-        // access appropriate "number of errors" modal 
-        const errorTotal = $("#number-of-errors-found")
-        // display modal
-        errorTotal.addClass("is-active");
-        // when modal is clicked on 
-        $(errorTotal).on("click", function () {
-            // set modal to hidden
-            errorTotal.removeClass("is-active");
-        });
-
+        
         removePreviouslyAppendedErrors();
         if (result && result.length) {
             const table = $("<table></table>");
@@ -144,6 +133,17 @@ $(document).ready(function () {
                 table.append(tableDataRow);
             });
             $("#append-errors-here").append(table);
+            // access modal content for number of errors found and set error count to result.lenght
+            $("#total-errors-here").text(result.length);
+            // access appropriate "number of errors" modal 
+            const errorTotal = $("#number-of-errors-found")
+            // display modal
+            errorTotal.addClass("is-active");
+            // when modal is clicked on 
+            $(errorTotal).on("click", function () {
+                // set modal to hidden
+                errorTotal.removeClass("is-active");
+            });
 
         }
         else {
