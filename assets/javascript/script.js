@@ -1,5 +1,8 @@
 // when document is ready, allow functions to run
 $(document).ready(function () {
+    // call NumberedTextArea function and add numbers to the text
+    $('#code-to-analyse').numberedtextarea();
+
 
     var result = [];
     function accesCodeToBeValidated() {
@@ -19,21 +22,21 @@ $(document).ready(function () {
             $(noCodeModal).on("click", function () {
                 // set to hidden
                 noCodeModal.removeClass("is-active");
-            })
+            });
+            // exit function - if no code is entered, do not continue
+            return;
         }
 
         // create a new variable containing the selected language from dropdown 
         var languageSelectedByUser = $("#language-selected :selected").val();
+        selectTheLanguageAPI (languageSelectedByUser, inputtedCodeToBeValidated);
 
+    }
 
-        //console.log(inputtedCodeToBeValidated);
-        //console.log(languageSelectedByUser);
-
-
+    function selectTheLanguageAPI (languageSelectedByUser, inputtedCodeToBeValidated) {
         if (languageSelectedByUser == "Javascript") {
             validateJavaScript(inputtedCodeToBeValidated);
             renderResult();
-
         }
         else if (languageSelectedByUser == "HTML") {
             // call the HTML API (creted by RJ)
@@ -54,8 +57,9 @@ $(document).ready(function () {
                 noLanguageModal.removeClass("is-active");
             })
         }
-        
     }
+
+
 
     function removePreviouslyAppendedErrors() {
         // remove all children nodes
@@ -115,6 +119,18 @@ $(document).ready(function () {
      * first clears the error div and then create a table presenting all errors and add it to relevant div
      */
     function renderResult() {
+        // access modal content for number of errors found and set error count to result.lenght
+        $("#total-errors-here").text(result.length);
+        // access appropriate "number of errors" modal 
+        const errorTotal = $("#number-of-errors-found")
+        // display modal
+        errorTotal.addClass("is-active");
+        // when modal is clicked on 
+        $(errorTotal).on("click", function () {
+            // set modal to hidden
+            errorTotal.removeClass("is-active");
+        });
+
         removePreviouslyAppendedErrors();
         if (result && result.length) {
             const table = $("<table></table>");
@@ -131,8 +147,6 @@ $(document).ready(function () {
 
         }
         else {
-            // @TODO convert it to modal
-            // console.log("No Error. All Good.");
             // access appropriate modal div
             const noErrorsFoundModal = $("#no-errors-found")
             // display modal
@@ -173,6 +187,5 @@ $(document).ready(function () {
 
     // add event listener to click of clear button 
     $("#clear-page").on("click", removePreviouslyAppendedErrors)
-
 
 });
