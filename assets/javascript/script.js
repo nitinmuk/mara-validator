@@ -31,7 +31,6 @@ $(document).ready(function() {
         // create a new variable containing the selected language from dropdown 
         var languageSelectedByUser = $("#language-selected :selected").val();
         selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated);
-
     }
 
     function selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated) {
@@ -86,7 +85,7 @@ $(document).ready(function() {
         }
     }
 
-    // HTML Validation function
+    // easy way to get current pages HTML
     function validateHtml(html) {
 
         // emulate form post
@@ -96,18 +95,23 @@ $(document).ready(function() {
 
         // make ajax call
         $.ajax({
-            url: "https://cors-anywhere.herokuapp.com/https://html5.validator.nu/",
+            url: "https://html5.validator.nu/",
             data: formData,
             dataType: "json",
             type: "POST",
             processData: false,
             contentType: false,
-            success: function(data) {
-                console.log(data.messages);
+            success: function(result) {
+                console.log(result);
+                const errors = result.messages;
+                console.log(errors);
+                result = [];
+                if (errors && errors.length) {
+                    $.each(errors, function(index, item) {
+                        createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
+                    });
+                }
             },
-            error: function() {
-                console.warn(arguments);
-            }
         });
     }
 
@@ -127,23 +131,31 @@ $(document).ready(function() {
     /**
      * prepares error object using input fields and push it to result array.
      * @param {line number where error is being reported} lineNum 
-     * @param {error reason} reason 
-     * @param {severity of error} severity 
-     * @param {line number content} evidence 
+     * @param {error reason or message} reason 
+     * @param {severity or type of error} severity 
+     * @param {line of code that has error} evidence 
      */
     function createAndPushErrorObject(lineNum, reason, severity, evidence) {
         const error = {};
         if (lineNum) {
             error['lineNo'] = lineNum;
+        } else if (lineNum) {
+            error['lastLine'] = lineNum;
         }
         if (reason) {
             error['reason'] = reason;
+        } else if (reason) {
+            error['message'] = reason;
         }
         if (severity) {
             error['severity'] = severity;
+        } else if (severity) {
+            error['type'] = severity;
         }
         if (evidence) {
             error['evidence'] = evidence;
+        } else if (evidence) {
+            error['extract'] = evidence;
         }
         result.push(error);
     }
@@ -152,22 +164,7 @@ $(document).ready(function() {
      * first clears the error div and then create a table presenting all errors and add it to relevant div
      */
     function renderResult() {
-<<<<<<< HEAD
-        
-=======
-        // access modal content for number of errors found and set error count to result.lenght
-        $("#total-errors-here").text(result.length);
-        // access appropriate "number of errors" modal 
-        const errorTotal = $("#number-of-errors-found")
-            // display modal
-        errorTotal.addClass("is-active");
-        // when modal is clicked on 
-        $(errorTotal).on("click", function() {
-            // set modal to hidden
-            errorTotal.removeClass("is-active");
-        });
 
->>>>>>> VC.30.10 added validate HTML function
         removePreviouslyAppendedErrors();
         if (result && result.length) {
             const table = $("<table></table>");
@@ -178,6 +175,10 @@ $(document).ready(function() {
                 tableDataRow.append($("<td></td>").text(item.reason));
                 tableDataRow.append($("<td></td>").text(item.severity));
                 tableDataRow.append($("<td></td>").text(item.evidence));
+                tableDataRow.append($("<td></td>").text(item.lastLine));
+                tableDataRow.append($("<td></td>").text(item.message));
+                tableDataRow.append($("<td></td>").text(item.type));
+                tableDataRow.append($("<td></td>").text(item.extract));
                 table.append(tableDataRow);
             });
             $("#append-errors-here").append(table);
@@ -185,10 +186,10 @@ $(document).ready(function() {
             $("#total-errors-here").text(result.length);
             // access appropriate "number of errors" modal 
             const errorTotal = $("#number-of-errors-found")
-            // display modal
+                // display modal
             errorTotal.addClass("is-active");
             // when modal is clicked on 
-            $(errorTotal).on("click", function () {
+            $(errorTotal).on("click", function() {
                 // set modal to hidden
                 errorTotal.removeClass("is-active");
             });
@@ -207,25 +208,24 @@ $(document).ready(function() {
     }
 
     /**
-     * preaprs head row for error table.
+     * prepares head row for error table.
      * @param {table whose head row need to be prepared} table 
-     * @param {object which need to be referred to preare head row} errorObj 
+     * @param {object which need to be referred to prepare head row} errorObj 
      */
     function prepareErrorTableHead(table, errorObj) {
         const tableHead = $("<tr></tr>");
-        if (errorObj.lineNo) {
+        if (errorObj.lineNo || errorObj.lastLine) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Line No."));
         }
-        if (errorObj.reason) {
+        if (errorObj.reason || errorObj.message) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Error Description"));
         }
-        if (errorObj.severity) {
-            tableHead.append($("<th class='has-text-primary'></th>").text("Error Severity"));
+        if (errorObj.severity || errorObj.type) {
+            tableHead.append($("<th class='has-text-primary'></th>").text("Error Type"));
         }
-        if (errorObj.evidence) {
+        if (errorObj.evidence || errorObj.extract) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Code In Focus"));
         }
-
         table.append(tableHead);
     }
 
