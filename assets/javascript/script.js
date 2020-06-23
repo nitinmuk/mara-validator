@@ -39,12 +39,11 @@ $(document).ready(function() {
             validateJavaScript(inputtedCodeToBeValidated);
             renderResult();
         } else if (languageSelectedByUser == "HTML") {
-            // call the HTML API (creted by RJ)
             validateHtml(inputtedCodeToBeValidated);
-            console.log("call HTML API")
+            renderResult();
         } else if (languageSelectedByUser == "CSS") {
-            // call the CSS API (creted by RJ)
-            console.log("call CSS API")
+            validateCss(inputtedCodeToBeValidated);
+            renderResult();
         } else {
             // access appropriate modal div
             const noLanguageModal = $("#no-language-selected-modal")
@@ -87,7 +86,7 @@ $(document).ready(function() {
         }
     }
 
-    // easy way to get current pages HTML
+    // HTML Validation function
     function validateHtml(html) {
 
         // emulate form post
@@ -104,7 +103,7 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(data) {
-                console.log(data.messages); // data.messages is an array
+                console.log(data.messages);
             },
             error: function() {
                 console.warn(arguments);
@@ -235,5 +234,4 @@ $(document).ready(function() {
 
     // add event listener to click of clear button 
     $("#clear-page").on("click", removePreviouslyAppendedErrors)
-
 });
