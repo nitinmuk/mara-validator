@@ -14,11 +14,11 @@ $(document).ready(function () {
             // access appropriate error message modal 
             const noCodeModal = $("#no-code-input-modal");
             // display modal
-            noCodeModal.removeClass("hide");
+            noCodeModal.addClass("is-active");
             // on click of modal
             $(noCodeModal).on("click", function () {
                 // set to hidden
-                noCodeModal.addClass("hide");
+                noCodeModal.removeClass("is-active");
             })
         }
 
@@ -47,11 +47,11 @@ $(document).ready(function () {
             // access appropriate modal div
             const noLanguageModal = $("#no-language-selected-modal")
             // display modal
-            noLanguageModal.removeClass("hide")
+            noLanguageModal.addClass("is-active");
             // when modal is clicked on 
             $(noLanguageModal).on("click", function () {
                 // set modal to hidden
-                noLanguageModal.addClass("hide")
+                noLanguageModal.removeClass("is-active");
             })
         }
         
@@ -131,9 +131,17 @@ $(document).ready(function () {
 
         }
         else {
-            //@TODO convert it to modal
-            console.log("No Error. All Good.");
-
+            // @TODO convert it to modal
+            // console.log("No Error. All Good.");
+            // access appropriate modal div
+            const noErrorsFoundModal = $("#no-errors-found")
+            // display modal
+            noErrorsFoundModal.addClass("is-active");
+            // when modal is clicked on 
+            $(noErrorsFoundModal).on("click", function () {
+                // set modal to hidden
+                noErrorsFoundModal.removeClass("is-active");
+            })
         }
     }
 
@@ -145,17 +153,18 @@ $(document).ready(function () {
     function prepareErrorTableHead(table, errorObj) {
         const tableHead = $("<tr></tr>");
         if (errorObj.lineNo) {
-            tableHead.append($("<th></th>").text("Line No."));
+            tableHead.append($("<th class='has-text-primary'></th>").text("Line No."));
         }
         if (errorObj.reason) {
-            tableHead.append($("<th></th>").text("Error Description"));
+            tableHead.append($("<th class='has-text-primary'></th>").text("Error Description"));
         }
         if (errorObj.severity) {
-            tableHead.append($("<th></th>").text("Error Severity"));
+            tableHead.append($("<th class='has-text-primary'></th>").text("Error Severity"));
         }
         if (errorObj.evidence) {
-            tableHead.append($("<th></th>").text("Code In Focus"));
+            tableHead.append($("<th class='has-text-primary'></th>").text("Code In Focus"));
         }
+        
         table.append(tableHead);
     }
 
