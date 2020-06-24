@@ -84,7 +84,6 @@ $(document).ready(function() {
         }
     }
 
-    // easy way to get current pages HTML
     function validateHtml(html) {
 
         // emulate form post
