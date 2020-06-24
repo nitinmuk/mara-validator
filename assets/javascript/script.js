@@ -3,7 +3,6 @@ $(document).ready(function() {
     // call NumberedTextArea function and add numbers to the text
     $('#code-to-analyse').numberedtextarea();
 
-
     var result = [];
 
     function accesCodeToBeValidated() {
@@ -45,14 +44,14 @@ $(document).ready(function() {
             renderResult();
         } else {
             // access appropriate modal div
-            const noLanguageModal = $("#no-language-selected-modal")
-                // display modal
+            const noLanguageModal = $("#no-language-selected-modal");
+            // display modal
             noLanguageModal.addClass("is-active");
             // when modal is clicked on 
             $(noLanguageModal).on("click", function() {
                 // set modal to hidden
                 noLanguageModal.removeClass("is-active");
-            })
+            });
         }
     }
 
@@ -116,9 +115,9 @@ $(document).ready(function() {
     }
 
     function validateCss(inputtedCodeToBeValidated) {
-        const outputFormat = "text/plain"
-        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(inputtedCodeToBeValidated)}&warning=0&profile=css2&output=${encodeURIComponent(outputFormat)}`
-            // make ajax call
+        const outputFormat = "text/plain";
+        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(inputtedCodeToBeValidated)}&warning=0&profile=css2&output=${encodeURIComponent(outputFormat)}`;
+        // make ajax call
         $.ajax({
                 url,
                 method: "GET"
@@ -126,7 +125,7 @@ $(document).ready(function() {
             .then(function(response) {
                 console.log(response);
             });
-    };
+    }
 
     /**
      * prepares error object using input fields and push it to result array.
@@ -171,10 +170,12 @@ $(document).ready(function() {
             prepareErrorTableHead(table, result[0]);
             $.each(result, function(index, item) {
                 const tableDataRow = $("<tr></tr>");
+                // Javascript validator results object values
                 tableDataRow.append($("<td></td>").text(item.lineNo));
                 tableDataRow.append($("<td></td>").text(item.reason));
                 tableDataRow.append($("<td></td>").text(item.severity));
                 tableDataRow.append($("<td></td>").text(item.evidence));
+                // HTML validator results object values
                 tableDataRow.append($("<td></td>").text(item.lastLine));
                 tableDataRow.append($("<td></td>").text(item.message));
                 tableDataRow.append($("<td></td>").text(item.type));
@@ -230,7 +231,7 @@ $(document).ready(function() {
     }
 
     // add event listener to click of 'validate' button  
-    $("#validate-code").on("click", accesCodeToBeValidated)
+    $("#validate-code").on("click", accesCodeToBeValidated);
 
     // add event listener to click of clear button 
     $("#clear-page").on("click", removePreviouslyAppendedErrors)
