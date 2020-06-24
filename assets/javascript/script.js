@@ -38,7 +38,6 @@ $(document).ready(function() {
             renderResult();
         } else if (languageSelectedByUser == "HTML") {
             validateHtml(inputtedCodeToBeValidated);
-            renderResult();
         } else if (languageSelectedByUser == "CSS") {
             validateCss(inputtedCodeToBeValidated);
             renderResult();
@@ -54,8 +53,6 @@ $(document).ready(function() {
             });
         }
     }
-
-
 
     function removePreviouslyAppendedErrors() {
         // remove all children nodes
@@ -87,7 +84,6 @@ $(document).ready(function() {
     }
 
     function validateHtml(html) {
-
         // emulate form post
         var formData = new FormData();
         formData.append('out', 'json');
@@ -102,16 +98,15 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(result) {
-                console.log(result);
                 const errors = result.messages;
-                console.log(errors);
                 result = [];
                 if (errors && errors.length) {
                     $.each(errors, function(index, item) {
                         createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
                     });
+                    renderResult();
                 }
-            },
+            }
         });
     }
 
@@ -138,24 +133,24 @@ $(document).ready(function() {
     function createAndPushErrorObject(lineNum, reason, severity, evidence) {
         const error = {};
         if (lineNum) {
-            error['lineNo'] = lineNum;
+            error.lineNo = lineNum;
         } else if (lineNum) {
-            error['lastLine'] = lineNum;
+            error.lastLine = lineNum;
         }
         if (reason) {
-            error['reason'] = reason;
+            error.reason = reason;
         } else if (reason) {
-            error['message'] = reason;
+            error.message = reason;
         }
         if (severity) {
-            error['severity'] = severity;
+            error.severity = severity;
         } else if (severity) {
-            error['type'] = severity;
+            error.type = severity;
         }
         if (evidence) {
-            error['evidence'] = evidence;
+            error.evidence = evidence;
         } else if (evidence) {
-            error['extract'] = evidence;
+            error.extract = evidence;
         }
         result.push(error);
     }
@@ -164,7 +159,6 @@ $(document).ready(function() {
      * first clears the error div and then create a table presenting all errors and add it to relevant div
      */
     function renderResult() {
-
         removePreviouslyAppendedErrors();
         if (result && result.length) {
             const table = $("<table></table>");
@@ -195,7 +189,6 @@ $(document).ready(function() {
                 // set modal to hidden
                 errorTotal.removeClass("is-active");
             });
-
         } else {
             // access appropriate modal div
             const noErrorsFoundModal = $("#no-errors-found")
