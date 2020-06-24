@@ -170,12 +170,12 @@ $(document).ready(function() {
             prepareErrorTableHead(table, result[0]);
             $.each(result, function(index, item) {
                 const tableDataRow = $("<tr></tr>");
-                // Javascript validator results object values
+                // Print Javascript validator results object values
                 tableDataRow.append($("<td></td>").text(item.lineNo));
                 tableDataRow.append($("<td></td>").text(item.reason));
                 tableDataRow.append($("<td></td>").text(item.severity));
                 tableDataRow.append($("<td></td>").text(item.evidence));
-                // HTML validator results object values
+                // Print HTML validator results object values
                 tableDataRow.append($("<td></td>").text(item.lastLine));
                 tableDataRow.append($("<td></td>").text(item.message));
                 tableDataRow.append($("<td></td>").text(item.type));
