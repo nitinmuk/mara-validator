@@ -2,144 +2,167 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mara Validator</title>
-    <!-- bulma link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <!-- stylesheet -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <!-- jquery script -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- JSHint API-->
-    <script src="./assets/javascript/jshint/jshint.js"></script>
-    <!-- plugin for line numbers in textarea -->
-    <script src="./assets/javascript/NumberedTextArea/jquery.numberedtextarea.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mara Validator</title>
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="./assets/images/dog.png" />
+  <!-- bulma link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- jquery script -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!-- JSHint API-->
+  <script src="./assets/javascript/jshint/jshint.js"></script>
+  <!-- line numbers in textarea -->
+  <script src="./assets/javascript/NumberedTextArea/jquery.numberedtextarea.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
 
 </head>
 
 <body>
 
-    <!-- page header -->
-    <section class="hero is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title is-size-1 has-text-weight-medium">Mara Validator</h1>
-                <h2 class="subtitle has-text-white">Your one-stop for code validation.</h2>
-            </div>
-        </div>
-    </section>
+  <!-- page header -->
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title is-size-1 has-text-weight-medium">Mara Validator</h1>
+        <h2 class="subtitle has-text-white">Your one-stop for code validation.</h2>
+      </div>
+    </div>
+  </section>
 
 
-    <!-- create centred column containing oage content -->
-    <div class="columns is-mobile is-centered">
+  <!-- create centred column containing oage content -->
+  <div class="columns is-mobile is-multiline is-centered">
 
-        <!-- column will be 2/3 of viewport -->
-        <div class="column is-full-tablet is-two-thirds-desktop">
+    <!-- column will be 2/3 of viewport -->
+    <div class="column is-full-tablet is-two-thirds-desktop">
 
-            <form>
-                <!-- dropdown to select language -->
-                <div class="field ">
-                    <div class="field is-horizontal is-grouped is-grouped-centered my-5 py-2">
-                        <label class="label is-medium mr-4">Choose a language:</label>
-                        <div class="control">
-                            <div class="select is-primary">
-                                <select name="language-selected" id="language-selected">
+      <form>
+        <!-- dropdown to select language -->
+        <div class="field ">
+          <div class="field is-horizontal is-grouped is-grouped-centered my-5 py-2">
+            <label class="label is-medium mr-4">Choose a language:</label>
+            <div class="control">
+              <div class="select is-primary">
+                <select name="language-selected" id="language-selected">
                   <option value="select">--Select--</option>
                   <option value="HTML">HTML</option>
                   <option value="CSS">CSS</option>
                   <option value="Javascript">Javascript</option>
                 </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- enter code input field -->
-                <div class="field">
-                    <div class="has-addons flex-wrap is-primary">
-                        <article class="panel is-primary is-bold">
-
-                            <p class="panel-heading">
-                                Enter your code below.
-                            </p>
-                            <div class="control" id="editor">
-                                <textarea class="textarea is-primary" id="code-to-analyse" rows="15" wrap='off'></textarea>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-
-
-                <!-- buttons to submit/clear inputs -->
-                <div class="field is-grouped is-grouped-centered">
-                    <div class="control">
-                        <div class="buttons are-medium">
-                            <input class="button is-primary is-rounded my-3" type="submit" value="Validate" id="validate-code">
-                            <input type="reset" class="button is-primary is-rounded my-3" value="Clear" id="clear-page">
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <!-- errors to be appended here -->
-            <div class="content my-6">
-                <div id="append-errors-here"></div>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <!-- enter code input field -->
+        <div class="field">
+          <div class="has-addons flex-wrap is-primary">
+            <article class="panel is-primary is-bold">
+
+              <p class="panel-heading">
+                Enter your code below.
+              </p>
+              <div class="control" id="editor">
+                <textarea class="textarea is-primary" id="code-to-analyse" rows="15" wrap='off'></textarea>
+              </div>
+            </article>
+          </div>
         </div>
 
 
-
-        <!-- error modal displayed when user does not select a language from dropdown -->
-        <div class="modal" id="no-language-selected-modal">
-            <div class="modal-background"></div>
-            <div class="modal-content is-size-4">
-                <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Please select a language
+        <!-- buttons to submit/clear inputs -->
+        <div class="field is-grouped is-grouped-centered">
+          <div class="control">
+            <div class="buttons are-medium">
+              <input class="button is-primary is-rounded my-3" type="submit" value="Validate"
+                id="validate-code"></input>
+              <input type="reset" class="button is-primary is-rounded my-3" value="Clear" id="clear-page"></input>
             </div>
-            <button class="modal-close is-large" aria-label="close"></button>
+          </div>
         </div>
+      </form>
 
-        <!-- error modal displayed when user down not input any code -->
-        <div class="modal" id="no-code-input-modal">
-            <div class="modal-background"></div>
-            <div class="modal-content is-size-4">
-                <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Please enter your code
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
-
-        <!-- error modal displayed when code entered is not the same as selected language -->
-        <div class="modal" id="wrong-language-selected">
-            <div class="modal-background"></div>
-            <div class="modal-content is-size-3">
-                <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Please check the selected language
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
-
-        <!-- modal displayed when no errors found -->
-        <div class="modal" id="no-errors-found">
-            <div class="modal-background"></div>
-            <div class="modal-content is-size-2 has-text-centered">
-                <span class="has-text-primary has-text-weight-semibold">NO ERRORS FOUND</span></div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
-
-        <!-- number of errors found -->
-        <div class="modal" id="number-of-errors-found">
-            <div class="modal-background"></div>
-            <div class="modal-content is-size-3">
-                <span class="has-text-danger-dark has-text-weight-semibold">Number of errors found: </span>
-                <span class="has-text-weight-bold" id="total-errors-here"></span>
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
+      <!-- errors to be appended here -->
+      <div class="content my-6">
+        <div id="append-errors-here"></div>
+      </div>
 
     </div>
 
-    <!-- JS file in assets -->
-    <script src="assets/javascript/script.js"></script>
+    <div class="column is-full">
+      <footer class="footer py-5">
+        <div class="container">
+          <div class="content has-text-centered">
+            <p>
+              <strong class="content ">Mara Validator</strong> by
+              <a class="has-text-primary" target="_blank" href="https://github.com/arjaesj">RJ San Jose</a>,
+              <a class="has-text-primary" target="_blank" href="https://github.com/nitinmuk">Nitin Mukesh</a>
+              &
+              <a class="has-text-primary" target="_blank" href="https://github.com/robynheslop">Robyn Heslop</a>.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+
+  <!-- error modal displayed when user does not select a language from dropdown -->
+  <div class="modal" id="no-language-selected-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content is-size-4">
+      <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Please select a language
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <!-- error modal displayed when user down not input any code -->
+  <div class="modal" id="no-code-input-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content is-size-4">
+      <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Please enter your code
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <!-- error modal displayed when code entered is not the same as selected language -->
+  <div class="modal" id="wrong-language-selected">
+    <div class="modal-background"></div>
+    <div class="modal-content is-size-3">
+      <span class="has-text-primary has-text-weight-semibold">ERROR: </span>Are you sure the code language is <span id="insert-language-here"></span>?
+      <section class="buttons is-centered">
+        <button class="button is-primary is-medium is-rounded my-3" type="submit" id="correct-language">Yes</button>
+        <button class="button is-primary is-medium is-rounded my-3" type="submit" id="incorrect-language">No</button>
+      </section>
+    </div>
+   
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <!-- modal displayed when no errors found -->
+  <div class="modal" id="no-errors-found">
+    <div class="modal-background"></div>
+    <div class="modal-content is-size-2 has-text-centered">
+      <span class="has-text-primary has-text-weight-semibold">NO ERRORS FOUND</span></div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <!-- number of errors found -->
+  <div class="modal" id="number-of-errors-found">
+    <div class="modal-background"></div>
+    <div class="modal-content is-size-3">
+      <span class="has-text-danger-dark has-text-weight-semibold">Number of errors found: </span>
+      <span class="has-text-weight-bold" id="total-errors-here"></span>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <!-- JS file in assets -->
+  <script src="assets/javascript/script.js"></script>
 
 </body>
-
 </html>
