@@ -60,8 +60,7 @@ $(document).ready(function() {
                 validateHtml(inputtedCodeToBeValidated);
             }
             else if (languageSelectedByUser == "CSS") {
-                // call the CSS API (creted by RJ)
-                console.log("call CSS API");
+                validateCss(inputtedCodeToBeValidated);
             }
         });
 
@@ -99,7 +98,7 @@ $(document).ready(function() {
         } 
         else if (languageSelectedByUser == "CSS") {
             if (codeLanguageDetected == "css") {
-                selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated);
+                validateCss(inputtedCodeToBeValidated);
             } else {
                 $("#insert-language-here").text("CSS");
                 wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated);
@@ -213,18 +212,50 @@ $(document).ready(function() {
         });
     }
 
-    function validateCss(inputtedCodeToBeValidated) {
+    function validateCss(source) {
         const outputFormat = "text/plain";
-        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(inputtedCodeToBeValidated)}&warning=0&profile=css2&output=${encodeURIComponent(outputFormat)}`;
+        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(source)}&warning=0&profile=css3&output=${encodeURIComponent(outputFormat)}`
         // make ajax call
         $.ajax({
-                url,
-                method: "GET"
-            })
-            .then(function(response) {
-                console.log(response);
+            url,
+            method: "GET"
+        })
+            .then(function (response) {
+                //console.log(response);
+                const lines = response.split("\n");
+                var lineNum, description, errorType, evidence;
+                result = [];
+                var errorFinished = false;
+                $.each(lines, function (index, line) {
+                    console.log(line);
+                    if (line.indexOf("Warning") > -1) {
+                        errorFinished = true;
+                    }
+                    if (line.indexOf("Line") > -1) {
+                        //console.log(line);
+                        const colonSplit = line.split(":");
+                        const spaceSplit = colonSplit[1].split(" ");
+                        lineNum = spaceSplit[1];
+                        const splitForEvidence = colonSplit[1].split(lineNum);
+                        console.log("lineNum = " + lineNum + "& evidence = " + evidence);
+                        if (errorFinished) {
+                            errorType = "warning";
+                            description = splitForEvidence[1];
+                            evidence = splitForEvidence[1];
+                        }
+                        else {
+                            errorType = "error";
+                            description = lines[index + 1].trim() + lines[index + 2].trim();
+                            evidence = splitForEvidence[1];
+
+                        }
+                        //console.log("description = " + description);
+                        createAndPushErrorObject(lineNum, description, errorType, evidence)
+                    }
+                });
+                renderResult();
             });
-    }
+    };
 
     /**
      * prepares error object using input fields and push it to result array.
