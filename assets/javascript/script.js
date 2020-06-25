@@ -35,6 +35,7 @@ $(document).ready(function () {
         const codeLanguageDetected = lan.language;
 
         // create a new variable containing the selected language from dropdown 
+<<<<<<< HEAD
         const languageSelectedByUser = $("#language-selected :selected").val();
 
         console.log(languageSelectedByUser)
@@ -77,6 +78,14 @@ $(document).ready(function () {
     }
 
     function selectTheLanguageAPI(languageSelectedByUser, codeLanguageDetected, inputtedCodeToBeValidated) {
+=======
+        var languageSelectedByUser = $("#language-selected :selected").val();
+        selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated);
+
+    }
+
+    function selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated) {
+>>>>>>> 6cdf752... updated CSS function
         if (languageSelectedByUser == "Javascript") {
             if (codeLanguageDetected == "javascript") {
                 validateJavaScript(inputtedCodeToBeValidated);
@@ -162,7 +171,11 @@ $(document).ready(function () {
      */
     function validateCss(source) {
         const outputFormat = "text/plain";
+<<<<<<< HEAD
         const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(source)}&warning=0&profile=css3&output=${encodeURIComponent(outputFormat)}`
+=======
+        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(source)}&warning=0&profile=css2&output=${encodeURIComponent(outputFormat)}`
+>>>>>>> 6cdf752... updated CSS function
         // make ajax call
         $.ajax({
             url,
