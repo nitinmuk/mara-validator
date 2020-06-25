@@ -133,7 +133,6 @@ $(document).ready(function () {
             method: "GET"
         })
             .then(function (response) {
-                //console.log(response);
                 const lines = response.split("\n");
                 var lineNum, description, errorType, evidence;
                 result = [];
@@ -144,7 +143,6 @@ $(document).ready(function () {
                         errorFinished = true;
                     }
                     if (line.indexOf("Line") > -1) {
-                        //console.log(line);
                         const colonSplit = line.split(":");
                         const spaceSplit = colonSplit[1].split(" ");
                         lineNum = spaceSplit[1];
@@ -161,7 +159,6 @@ $(document).ready(function () {
                             evidence = splitForEvidence[1];
 
                         }
-                        //console.log("description = " + description);
                         createAndPushErrorObject(lineNum, description, errorType, evidence)
                     }
                 });
