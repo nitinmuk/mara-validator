@@ -134,23 +134,15 @@ $(document).ready(function() {
         const error = {};
         if (lineNum) {
             error.lineNo = lineNum;
-        } else if (lineNum) {
-            error.lastLine = lineNum;
         }
         if (reason) {
             error.reason = reason;
-        } else if (reason) {
-            error.message = reason;
         }
         if (severity) {
             error.severity = severity;
-        } else if (severity) {
-            error.type = severity;
         }
         if (evidence) {
             error.evidence = evidence;
-        } else if (evidence) {
-            error.extract = evidence;
         }
         result.push(error);
     }
