@@ -163,10 +163,10 @@ $(document).ready(function() {
                 tableDataRow.append($("<td></td>").text(item.severity));
                 tableDataRow.append($("<td></td>").text(item.evidence));
                 // Print HTML validator results object values
-                tableDataRow.append($("<td></td>").text(item.lastLine));
-                tableDataRow.append($("<td></td>").text(item.message));
-                tableDataRow.append($("<td></td>").text(item.type));
-                tableDataRow.append($("<td></td>").text(item.extract));
+                // tableDataRow.append($("<td></td>").text(item.lastLine));
+                // tableDataRow.append($("<td></td>").text(item.message));
+                // tableDataRow.append($("<td></td>").text(item.type));
+                // tableDataRow.append($("<td></td>").text(item.extract));
                 table.append(tableDataRow);
             });
             $("#append-errors-here").append(table);
@@ -201,16 +201,16 @@ $(document).ready(function() {
      */
     function prepareErrorTableHead(table, errorObj) {
         const tableHead = $("<tr></tr>");
-        if (errorObj.lineNo || errorObj.lastLine) {
+        if (errorObj.lineNo) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Line No."));
         }
-        if (errorObj.reason || errorObj.message) {
+        if (errorObj.reason) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Error Description"));
         }
-        if (errorObj.severity || errorObj.type) {
+        if (errorObj.severity) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Error Type"));
         }
-        if (errorObj.evidence || errorObj.extract) {
+        if (errorObj.evidence) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Code In Focus"));
         }
         table.append(tableHead);
