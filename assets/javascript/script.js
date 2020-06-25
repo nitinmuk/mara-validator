@@ -1,10 +1,10 @@
 // when document is ready, allow functions to run
-$(document).ready(function () {
+$(document).ready(function() {
     // call NumberedTextArea function and add numbers to the text
     $('#code-to-analyse').numberedtextarea();
 
-
     var result = [];
+
     function accesCodeToBeValidated() {
         // prevent default behaviour
         event.preventDefault();
@@ -19,7 +19,7 @@ $(document).ready(function () {
             // display modal
             noCodeModal.addClass("is-active");
             // on click of modal
-            $(noCodeModal).on("click", function () {
+            $(noCodeModal).on("click", function() {
                 // set to hidden
                 noCodeModal.removeClass("is-active");
             });
@@ -29,37 +29,30 @@ $(document).ready(function () {
 
         // create a new variable containing the selected language from dropdown 
         var languageSelectedByUser = $("#language-selected :selected").val();
-        selectTheLanguageAPI (languageSelectedByUser, inputtedCodeToBeValidated);
-
+        selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated);
     }
 
-    function selectTheLanguageAPI (languageSelectedByUser, inputtedCodeToBeValidated) {
+    function selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated) {
         if (languageSelectedByUser == "Javascript") {
             validateJavaScript(inputtedCodeToBeValidated);
             renderResult();
-        }
-        else if (languageSelectedByUser == "HTML") {
-            // call the HTML API (creted by RJ)
-            console.log("call HTML API")
-        }
-        else if (languageSelectedByUser == "CSS") {
-            // call the CSS API (creted by RJ)
-            console.log("call CSS API")
-        }
-        else {
+        } else if (languageSelectedByUser == "HTML") {
+            validateHtml(inputtedCodeToBeValidated);
+        } else if (languageSelectedByUser == "CSS") {
+            validateCss(inputtedCodeToBeValidated);
+            renderResult();
+        } else {
             // access appropriate modal div
-            const noLanguageModal = $("#no-language-selected-modal")
+            const noLanguageModal = $("#no-language-selected-modal");
             // display modal
             noLanguageModal.addClass("is-active");
             // when modal is clicked on 
-            $(noLanguageModal).on("click", function () {
+            $(noLanguageModal).on("click", function() {
                 // set modal to hidden
                 noLanguageModal.removeClass("is-active");
-            })
+            });
         }
     }
-
-
 
     function removePreviouslyAppendedErrors() {
         // remove all children nodes
@@ -84,33 +77,72 @@ $(document).ready(function () {
         const errors = JSHINT.data().errors;
         result = [];
         if (errors && errors.length) {
-            $.each(errors, function (index, item) {
+            $.each(errors, function(index, item) {
                 createAndPushErrorObject(item.line, item.reason, item.id, item.evidence);
-
             });
         }
+    }
+
+    function validateHtml(html) {
+        // emulate form post
+        var formData = new FormData();
+        formData.append('out', 'json');
+        formData.append('content', html);
+
+        // make ajax call
+        $.ajax({
+            url: "https://html5.validator.nu/",
+            data: formData,
+            dataType: "json",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                const errors = result.messages;
+                result = [];
+                if (errors && errors.length) {
+                    $.each(errors, function(index, item) {
+                        createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
+                    });
+                    renderResult();
+                }
+            }
+        });
+    }
+
+    function validateCss(inputtedCodeToBeValidated) {
+        const outputFormat = "text/plain";
+        const url = `https://cors-anywhere.herokuapp.com/http://jigsaw.w3.org/css-validator/validator?text=${encodeURIComponent(inputtedCodeToBeValidated)}&warning=0&profile=css2&output=${encodeURIComponent(outputFormat)}`;
+        // make ajax call
+        $.ajax({
+                url,
+                method: "GET"
+            })
+            .then(function(response) {
+                console.log(response);
+            });
     }
 
     /**
      * prepares error object using input fields and push it to result array.
      * @param {line number where error is being reported} lineNum 
-     * @param {error reason} reason 
-     * @param {severity of error} severity 
-     * @param {line number content} evidence 
+     * @param {error reason or message} reason 
+     * @param {severity or type of error} severity 
+     * @param {line of code that has error} evidence 
      */
     function createAndPushErrorObject(lineNum, reason, severity, evidence) {
         const error = {};
         if (lineNum) {
-            error['lineNo'] = lineNum;
+            error.lineNo = lineNum;
         }
         if (reason) {
-            error['reason'] = reason;
+            error.reason = reason;
         }
         if (severity) {
-            error['severity'] = severity;
+            error.severity = severity;
         }
         if (evidence) {
-            error['evidence'] = evidence;
+            error.evidence = evidence;
         }
         result.push(error);
     }
@@ -119,17 +151,22 @@ $(document).ready(function () {
      * first clears the error div and then create a table presenting all errors and add it to relevant div
      */
     function renderResult() {
-        
         removePreviouslyAppendedErrors();
         if (result && result.length) {
             const table = $("<table></table>");
             prepareErrorTableHead(table, result[0]);
-            $.each(result, function (index, item) {
+            $.each(result, function(index, item) {
                 const tableDataRow = $("<tr></tr>");
+                // Print Javascript validator results object values
                 tableDataRow.append($("<td></td>").text(item.lineNo));
                 tableDataRow.append($("<td></td>").text(item.reason));
                 tableDataRow.append($("<td></td>").text(item.severity));
                 tableDataRow.append($("<td></td>").text(item.evidence));
+                // Print HTML validator results object values
+                // tableDataRow.append($("<td></td>").text(item.lastLine));
+                // tableDataRow.append($("<td></td>").text(item.message));
+                // tableDataRow.append($("<td></td>").text(item.type));
+                // tableDataRow.append($("<td></td>").text(item.extract));
                 table.append(tableDataRow);
             });
             $("#append-errors-here").append(table);
@@ -137,22 +174,20 @@ $(document).ready(function () {
             $("#total-errors-here").text(result.length);
             // access appropriate "number of errors" modal 
             const errorTotal = $("#number-of-errors-found")
-            // display modal
+                // display modal
             errorTotal.addClass("is-active");
             // when modal is clicked on 
-            $(errorTotal).on("click", function () {
+            $(errorTotal).on("click", function() {
                 // set modal to hidden
                 errorTotal.removeClass("is-active");
             });
-
-        }
-        else {
+        } else {
             // access appropriate modal div
             const noErrorsFoundModal = $("#no-errors-found")
-            // display modal
+                // display modal
             noErrorsFoundModal.addClass("is-active");
             // when modal is clicked on 
-            $(noErrorsFoundModal).on("click", function () {
+            $(noErrorsFoundModal).on("click", function() {
                 // set modal to hidden
                 noErrorsFoundModal.removeClass("is-active");
             })
@@ -160,9 +195,9 @@ $(document).ready(function () {
     }
 
     /**
-     * preaprs head row for error table.
+     * prepares head row for error table.
      * @param {table whose head row need to be prepared} table 
-     * @param {object which need to be referred to preare head row} errorObj 
+     * @param {object which need to be referred to prepare head row} errorObj 
      */
     function prepareErrorTableHead(table, errorObj) {
         const tableHead = $("<tr></tr>");
@@ -173,19 +208,17 @@ $(document).ready(function () {
             tableHead.append($("<th class='has-text-primary'></th>").text("Error Description"));
         }
         if (errorObj.severity) {
-            tableHead.append($("<th class='has-text-primary'></th>").text("Error Severity"));
+            tableHead.append($("<th class='has-text-primary'></th>").text("Error Type"));
         }
         if (errorObj.evidence) {
             tableHead.append($("<th class='has-text-primary'></th>").text("Code In Focus"));
         }
-        
         table.append(tableHead);
     }
 
     // add event listener to click of 'validate' button  
-    $("#validate-code").on("click", accesCodeToBeValidated)
+    $("#validate-code").on("click", accesCodeToBeValidated);
 
     // add event listener to click of clear button 
     $("#clear-page").on("click", removePreviouslyAppendedErrors)
-
 });
