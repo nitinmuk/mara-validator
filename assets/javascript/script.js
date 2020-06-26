@@ -3,9 +3,15 @@ $(document).ready(function() {
     // call NumberedTextArea function and add numbers to the text
     $('#code-to-analyse').numberedtextarea();
 
-    var result = [];
+    // access local storage "language" and assign to variable
+    let languageValue = localStorage.getItem("language")
+    // if language value is not empty, display on dropdown 
+    if (languageValue !== null) {
+        $("select#language-selected").val(languageValue);
+    }
 
     function accesCodeToBeValidated() {
+        
         // prevent default behaviour
         event.preventDefault();
 
@@ -17,11 +23,11 @@ $(document).ready(function() {
             // access appropriate error message modal 
             const noCodeModal = $("#no-code-input-modal");
             // display modal
-            noCodeModal.addClass("is-active");
+            activateModal(noCodeModal);
             // on click of modal
             $(noCodeModal).on("click", function() {
                 // set to hidden
-                noCodeModal.removeClass("is-active");
+                deactivateModal(noCodeModal);
             });
             // exit function - if no code is entered, do not continue
             return;
@@ -30,28 +36,39 @@ $(document).ready(function() {
         // call highlight.JS and run inputted code through
         const lan = hljs.highlightAuto(inputtedCodeToBeValidated);
 
-        console.log(lan)
         // save language detected in variable
         const codeLanguageDetected = lan.language;
         
         // create a new variable containing the selected language from dropdown 
         const languageSelectedByUser = $("#language-selected :selected").val();
 
-        console.log(languageSelectedByUser)
+        addLatestLanguageToLocalStorage(languageSelectedByUser);
 
-        selectTheLanguageAPI(languageSelectedByUser, codeLanguageDetected, inputtedCodeToBeValidated)
+        selectTheLanguageAPI(languageSelectedByUser, codeLanguageDetected, inputtedCodeToBeValidated);
 
+    }
+
+    function activateModal(currentModal) {
+        currentModal.addClass("is-active");
+    }
+
+    function deactivateModal(currentModal) {
+        currentModal.removeClass("is-active");
+    }
+
+    function addLatestLanguageToLocalStorage(languageSelectedByUser) {
+        localStorage.setItem("language", languageSelectedByUser)
     }
 
     function wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated) {
         // access appropriate error message modal 
         const wrongLanguageModal = $("#wrong-language-selected");
         // display modal
-        wrongLanguageModal.addClass("is-active");
+        activateModal(wrongLanguageModal);
 
         $("#correct-language").on("click", function () {
-            wrongLanguageModal.removeClass("is-active");
-            console.log("clicked yes")
+            deactivateModal(wrongLanguageModal);
+
             if (languageSelectedByUser == "Javascript") {
                 validateJavaScript(inputtedCodeToBeValidated);
                 renderResult();
@@ -65,25 +82,30 @@ $(document).ready(function() {
         });
 
         $("#incorrect-language").on("click", function () {
-            wrongLanguageModal.removeClass("is-active");
+            deactivateModal(wrongLanguageModal);
             return;
         });
 
         $(".modal-close").on("click", function () {
-            wrongLanguageModal.removeClass("is-active");
+            deactivateModal(wrongLanguageModal);
             return;
         });
 
     }
 
+    function updateWrongLanguageModalText(languageSelectedByUser) {
+        $("#insert-language-here").text(languageSelectedByUser);
+    }
+
     function selectTheLanguageAPI(languageSelectedByUser, codeLanguageDetected, inputtedCodeToBeValidated) {
         if (languageSelectedByUser == "Javascript") {
             if (codeLanguageDetected == "javascript") {
+                console.log("match")
                 validateJavaScript(inputtedCodeToBeValidated);
                 renderResult();
 
             } else {
-                $("#insert-language-here").text("JavaScript");
+                updateWrongLanguageModalText(languageSelectedByUser)
                 wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated);
             }
         } 
@@ -92,7 +114,7 @@ $(document).ready(function() {
                 validateHtml(inputtedCodeToBeValidated);
                 
             } else {
-                $("#insert-language-here").text("HTML");
+                updateWrongLanguageModalText(languageSelectedByUser)
                 wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated);
             }
         } 
@@ -100,7 +122,7 @@ $(document).ready(function() {
             if (codeLanguageDetected == "css") {
                 validateCss(inputtedCodeToBeValidated);
             } else {
-                $("#insert-language-here").text("CSS");
+                updateWrongLanguageModalText(languageSelectedByUser)
                 wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated);
             }
         } 
@@ -108,52 +130,20 @@ $(document).ready(function() {
             // access appropriate modal div
             const noLanguageModal = $("#no-language-selected-modal");
             // display modal
-            noLanguageModal.addClass("is-active");
+            activateModal(noLanguageModal);
             // when modal is clicked on 
             $(noLanguageModal).on("click", function() {
                 // set modal to hidden
-                noLanguageModal.removeClass("is-active");
+                deactivateModal(noLanguageModal);
             });
         }
     }
-
-    function validateHtml(html) {
-        // emulate form post
-        var formData = new FormData();
-        formData.append('out', 'json');
-        formData.append('content', html);
-        // make ajax call
-        $.ajax({
-            url: "https://html5.validator.nu/",
-            data: formData,
-            dataType: "json",
-            type: "POST",
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                console.log(result);
-                const errors = result.messages;
-                console.log(errors);
-                result = [];
-                if (errors && errors.length) {
-                    $.each(errors, function (index, item) {
-                        createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
-                    });
-                    renderResult()
-                }
-            },
-        });
-    }
-
-
-
 
     function clearLineNumbersInTextArea() {
         const numberArea = $(".numberedtextarea-line-numbers");
         $(numberArea).children().not(':first').remove();
         removePreviouslyAppendedErrors()
     }
-
 
     function removePreviouslyAppendedErrors() {
         // remove all children nodes
@@ -190,7 +180,8 @@ $(document).ready(function() {
         var formData = new FormData();
         formData.append('out', 'json');
         formData.append('content', html);
-
+        // empty previous results 
+        result = [];
         // make ajax call
         $.ajax({
             url: "https://html5.validator.nu/",
@@ -201,7 +192,6 @@ $(document).ready(function() {
             contentType: false,
             success: function(result) {
                 const errors = result.messages;
-                result = [];
                 if (errors && errors.length) {
                     $.each(errors, function(index, item) {
                         createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
@@ -286,7 +276,6 @@ $(document).ready(function() {
      */
     function renderResult() {
         removePreviouslyAppendedErrors();
-
         if (result && result.length) {
             const table = $("<table></table>");
             prepareErrorTableHead(table, result[0]);
@@ -311,11 +300,11 @@ $(document).ready(function() {
             // access appropriate "number of errors" modal 
             const errorTotal = $("#number-of-errors-found");
             // display modal
-            errorTotal.addClass("is-active");
+            activateModal(errorTotal);
             // when modal is clicked on 
             $(errorTotal).on("click", function() {
                 // set modal to hidden
-                errorTotal.removeClass("is-active");
+                deactivateModal(errorTotal);
             });
         }
         else {
@@ -323,11 +312,11 @@ $(document).ready(function() {
             // access appropriate modal div
             const noErrorsFoundModal = $("#no-errors-found");
             // display modal
-            noErrorsFoundModal.addClass("is-active");
+            activateModal(noErrorsFoundModal);
             // when modal is clicked on 
             $(noErrorsFoundModal).on("click", function() {
                 // set modal to hidden
-                noErrorsFoundModal.removeClass("is-active");
+                deactivateModal(noErrorsFoundModal);
             });
         }
     }
@@ -343,7 +332,7 @@ $(document).ready(function() {
         tableHead.append($("<th class='has-text-primary'></th>").text("Line No."));
         tableHead.append($("<th class='has-text-primary'></th>").text("Error Description"));
         tableHead.append($("<th class='has-text-primary'></th>").text("Error Severity"));
-        tableHead.append($("<th class='has-text-primary'></th>").text("Code In Focus"));
+        tableHead.append($("<th class='has-text-primary' id='focus-code-column'></th>").text("Code In Focus"));
 
 
         // give error table a border
