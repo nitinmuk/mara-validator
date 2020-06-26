@@ -40,7 +40,6 @@ $(document).ready(function() {
 
         // save language detected in variable
         const codeLanguageDetected = lan.language;
-        console.log(lan.language)
         
         // create a new variable containing the selected language from dropdown 
         const languageSelectedByUser = $("#language-selected :selected").val();
@@ -216,7 +215,7 @@ $(document).ready(function() {
             .then(function (response) {
                 //console.log(response);
                 const lines = response.split("\n");
-                var lineNum, descripation, errorType, evidence;
+                var lineNum, description, errorType, evidence;
                 result = [];
                 var errorFinished = false;
                 $.each(lines, function (index, line) {
