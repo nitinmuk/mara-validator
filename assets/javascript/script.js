@@ -1,6 +1,7 @@
+//must be global variable which will store result to be rendered.
+var result = [];
 // when document is ready, allow functions to run
 $(document).ready(function() {
-    var result = [];
     // call NumberedTextArea function and add numbers to the text
     $('#code-to-analyse').numberedtextarea();
 
