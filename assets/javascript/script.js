@@ -45,7 +45,6 @@ $(document).ready(function () {
         const languageSelectedByUser = $("#language-selected :selected").val();
         addLatestLanguageToLocalStorage(languageSelectedByUser);
         selectTheLanguageAPI(languageSelectedByUser, inputtedCodeToBeValidated);
-
     }
 
     /**
@@ -91,7 +90,6 @@ $(document).ready(function () {
 
             if (languageSelectedByUser == "Javascript") {
                 validateJavaScript(inputtedCodeToBeValidated);
-                renderResult();
             }
             else if (languageSelectedByUser == "HTML") {
                 validateHtml(inputtedCodeToBeValidated);
@@ -133,12 +131,10 @@ $(document).ready(function () {
         const lan = hljs.highlightAuto(inputtedCodeToBeValidated);
         // store language detected in variable
         const codeLanguageDetected = lan.language;
-        
+
         if (languageSelectedByUser == "Javascript") {
             if (codeLanguageDetected == "javascript") {
                 validateJavaScript(inputtedCodeToBeValidated);
-                renderResult();
-
             } else {
                 updateWrongLanguageModalText(languageSelectedByUser);
                 wrongLanguageModalActivation(languageSelectedByUser, inputtedCodeToBeValidated);
@@ -213,8 +209,8 @@ $(document).ready(function () {
             $.each(errors, function (index, item) {
                 createAndPushErrorObject(item.line, item.reason, item.id, item.evidence);
             });
-            renderResult();
         }
+        renderResult();
     }
 
     /**
