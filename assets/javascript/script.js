@@ -1,5 +1,6 @@
 // when document is ready, allow functions to run
 $(document).ready(function() {
+    var result = [];
     // call NumberedTextArea function and add numbers to the text
     $('#code-to-analyse').numberedtextarea();
 
@@ -190,14 +191,14 @@ $(document).ready(function() {
             type: "POST",
             processData: false,
             contentType: false,
-            success: function(result) {
-                const errors = result.messages;
+            success: function(response) {
+                const errors = response.messages;
                 if (errors && errors.length) {
                     $.each(errors, function(index, item) {
                         createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
                     });
-                    renderResult();
                 }
+                renderResult();
             }
         });
     }
