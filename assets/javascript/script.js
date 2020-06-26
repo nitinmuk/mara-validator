@@ -189,15 +189,10 @@ $(document).ready(function() {
             type: "POST",
             processData: false,
             contentType: false,
-<<<<<<< HEAD
-            success: function(response) {
-                const errors = response.messages;
-=======
             success: function(result) {
                 // empty previous results
                 window.result = [];
                 const errors = result.messages;
->>>>>>> c570551... clearing global result array from success function
                 if (errors && errors.length) {
                     $.each(errors, function(index, item) {
                         createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
