@@ -68,7 +68,7 @@ $(document).ready(function() {
 
         $("#correct-language").on("click", function () {
             deactivateModal(wrongLanguageModal);
-            
+
             if (languageSelectedByUser == "Javascript") {
                 validateJavaScript(inputtedCodeToBeValidated);
                 renderResult();
@@ -145,7 +145,6 @@ $(document).ready(function() {
         removePreviouslyAppendedErrors()
     }
 
-
     function removePreviouslyAppendedErrors() {
         // remove all children nodes
         $("#append-errors-here").empty();
@@ -177,7 +176,6 @@ $(document).ready(function() {
     }
 
     function validateHtml(html) {
-        console.log(result);
         // emulate form post
         var formData = new FormData();
         formData.append('out', 'json');
@@ -278,7 +276,6 @@ $(document).ready(function() {
      */
     function renderResult() {
         removePreviouslyAppendedErrors();
-        console.log(result);
         if (result && result.length) {
             const table = $("<table></table>");
             prepareErrorTableHead(table, result[0]);
