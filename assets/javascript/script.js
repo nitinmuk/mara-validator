@@ -204,7 +204,7 @@ $(document).ready(function () {
         };
         JSHINT(source, options, predef);
         const errors = JSHINT.data().errors;
-        result = [];
+        window.result = [];
         if (errors && errors.length) {
             $.each(errors, function (index, item) {
                 createAndPushErrorObject(item.line, item.reason, item.id, item.evidence);
@@ -263,7 +263,7 @@ $(document).ready(function () {
             .then(function (response) {
                 const lines = response.split("\n");
                 var lineNum, description, errorType, evidence;
-                result = [];
+                window.result = [];
                 var errorFinished = false;
                 $.each(lines, function (index, line) {
                     if (line.indexOf("Warning") > -1) {
@@ -313,7 +313,7 @@ $(document).ready(function () {
         if (evidence) {
             error.evidence = evidence;
         }
-        result.push(error);
+        window.result.push(error);
     }
 
     /**
