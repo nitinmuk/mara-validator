@@ -65,3 +65,7 @@
 .numberedtextarea-line-numbers {
     background-color: white;
 }
+
+#focus-code-column {
+    width: 25%;
+}
