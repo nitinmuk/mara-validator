@@ -181,8 +181,6 @@ $(document).ready(function() {
         var formData = new FormData();
         formData.append('out', 'json');
         formData.append('content', html);
-        // empty previous results 
-        result = [];
         // make ajax call
         $.ajax({
             url: "https://html5.validator.nu/",
@@ -191,8 +189,10 @@ $(document).ready(function() {
             type: "POST",
             processData: false,
             contentType: false,
-            success: function(response) {
-                const errors = response.messages;
+            success: function(result) {
+                // empty previous results
+                window.result = [];
+                const errors = result.messages;
                 if (errors && errors.length) {
                     $.each(errors, function(index, item) {
                         createAndPushErrorObject(item.lastLine, item.message, item.type, item.extract);
