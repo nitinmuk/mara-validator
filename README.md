@@ -2,7 +2,9 @@
 
 Tired of jumping from website to website checking that all of your code is syntactically correct? Missing errors in the process?
 
-**Your stress is over**,** with the Mara Validator! Validate your code, be it HTML, CSS or JS, all in one place. 
+**Your stress is over**, with the Mara Validator! Validate your code, be it HTML, CSS or JS, all in one place. 
+
+https://robynheslop.github.io/mara-validator/
 
 ### User Story:
 As a web developer, I want to validate my code, written in multiple languages in one place so that I don’t need to visit many websites to cover each language and will be more time efficient. 
@@ -17,11 +19,16 @@ As a web developer, I want to validate my code, written in multiple languages in
 * Intuitive AI
 * Responsive Website
 * Clean, tabulated error format 
-
+* Attractive and informative modals appear on every validate button click.
 
 ### Sample of Page
 
+Input your code and select the language.
+
 ![enter-code](assets/images/readme/enter-code.png)
+
+View your errors at the bottom of the page.
+
 ![view-errors](assets/images/readme/view-errors.png)
 
 ### Technologies Utilised:
@@ -34,9 +41,9 @@ As a web developer, I want to validate my code, written in multiple languages in
 * Highlight.js
 
 ### Authors
-Nitin Mukesh
-Robyn Heslop
-RJ San Jose
+Nitin Mukesh,
+Robyn Heslop,
+RJ San Jose,
 
 ### Code validation
 Completed with the Mara Validator
