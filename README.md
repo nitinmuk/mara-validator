@@ -4,7 +4,7 @@ Tired of jumping from website to website checking that all of your code is synta
 
 **Your stress is over**, with the Mara Validator! Validate your code, be it HTML, CSS or JS, all in one place. 
 
-https://robynheslop.github.io/mara-validator/
+https://nitinmuk.github.io/mara-validator/
 
 ### User Story:
 As a web developer, I want to validate my code, written in multiple languages in one place so that I don’t need to visit many websites to cover each language and will be more time efficient. 
